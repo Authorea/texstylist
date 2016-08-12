@@ -23,6 +23,7 @@ class StyleHelloWorldTest < Minitest::Test
   end
 
   def test_can_load_metadata
+    # need to decide what metadata languages we accept/support here...
   end
 
   def test_can_style_hello_world_with_metadata
@@ -44,6 +45,24 @@ class StyleHelloWorldTest < Minitest::Test
     assert styled_article_body.match(/\\usepackage\{graphicx\}/), 'default graphicx package is on'
     assert styled_article_body.match(/\\begin\{document\}/), 'document start exists'
     assert styled_article_body.match(/\\end\{document\}/), 'document end exists'
+  end
 
+  def test_can_auto_internationalize_cyrillic
+    stylist = Texstylist.new(:article)
+
+    article_body = 'Hello \world! Здравей свят! Done.'
+    article_metadata = {
+      header: '\def\world{World}',
+      long_title: 'A International Article',
+      first_author: 'International Author',
+      first_affiliation: 'Texstylist Gem',
+    }
+
+    styled_article_body = stylist.render(article_body, article_metadata)
+
+    assert styled_article_body.include?('Здравей свят'), 'cyrillic passed as is'
+    assert styled_article_body.include?('\\usepackage[russian,english]{babel}')
+    assert styled_article_body.include?('\\selectlanguage{russian}'), 'cyrillic activated'
+    assert styled_article_body.include?('\\selectlanguage{english}'), 'english activated'
   end
 end
