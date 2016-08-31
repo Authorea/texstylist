@@ -62,7 +62,7 @@ class Texstylist
     # III. Advanced auto-magical internationalization of unicode with babel (intended for use with pdflatex)
     if @style.package_compatible?(:babel)
       # Having the full body and preamble, figure out which flavours of babel we need (and potentially other text-dependent logic)
-      metadata[:default_packages] = @default_packages
+      metadata["default_packages"] = @default_packages
       preamble = @style.render_latex(metadata)
       # We'll have to rerender the preamble with all language locales setup
       @default_packages << UnicodeBabel::latex_inclusions(preamble + body)
@@ -72,7 +72,7 @@ class Texstylist
     end
 
     # IV. Render the preamble and prepare the final latex document
-    metadata[:default_packages] = @default_packages
+    metadata["default_packages"] = @default_packages
     preamble = @style.render_latex(metadata)
     full_article = preamble + "\n\n" + body
 
