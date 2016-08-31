@@ -12,9 +12,9 @@ class Texstylist
     @default_packages_list = package_candidates.select{|candidate| @style.package_compatible?(candidate)}
   end
 
-  def render(article_body, article_metadata = {})
-    return '' if article_body.empty?
-    @header = article_metadata[:header]
+  def render(body, header=nil, metadata = {})
+    return '' if body.empty?
+    @header = header
 
     # I. Prepare default package inclusions
     @default_packages = ''
@@ -62,19 +62,19 @@ class Texstylist
     # III. Advanced auto-magical internationalization of unicode with babel (intended for use with pdflatex)
     if @style.package_compatible?(:babel)
       # Having the full body and preamble, figure out which flavours of babel we need (and potentially other text-dependent logic)
-      article_metadata[:default_packages] = @default_packages
-      preamble = @style.render_latex(article_metadata)
+      metadata[:default_packages] = @default_packages
+      preamble = @style.render_latex(metadata)
       # We'll have to rerender the preamble with all language locales setup
-      @default_packages << UnicodeBabel::latex_inclusions(preamble + article_body)
+      @default_packages << UnicodeBabel::latex_inclusions(preamble + body)
       @default_packages << "\n"
       # And auto-deposit various language activation macros in the article itself
-      article_body = UnicodeBabel::activate_foreign_languages(article_body)
+      body = UnicodeBabel::activate_foreign_languages(body)
     end
 
     # IV. Render the preamble and prepare the final latex document
-    article_metadata[:default_packages] = @default_packages
-    preamble = @style.render_latex(article_metadata)
-    full_article = preamble + "\n\n" + article_body
+    metadata[:default_packages] = @default_packages
+    preamble = @style.render_latex(metadata)
+    full_article = preamble + "\n\n" + body
 
     # IV.1. Normalize to simpler latex
     full_article = simplify_latex(full_article)

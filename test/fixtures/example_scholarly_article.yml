@@ -1,0 +1,13 @@
+title: 'An example scholarly article'
+short_title: 'Example article'
+authors:
+  - name: 'First Author'
+    affiliation: 1
+  - name: 'Second Author'
+    affiliation: 2
+  - name: 'Third Author'
+    affiliations: [1, 2]
+
+affiliations:
+  1: 'Example Organization'
+  2: 'Another Organization'
