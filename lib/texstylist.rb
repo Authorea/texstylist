@@ -63,6 +63,7 @@ class Texstylist
     if @style.package_compatible?(:babel)
       # Having the full body and preamble, figure out which flavours of babel we need (and potentially other text-dependent logic)
       metadata["default_packages"] = @default_packages
+      metadata["header"] = @header
       preamble = @style.render_latex(metadata)
       # We'll have to rerender the preamble with all language locales setup
       @default_packages << UnicodeBabel::latex_inclusions(preamble + body)
@@ -73,6 +74,7 @@ class Texstylist
 
     # IV. Render the preamble and prepare the final latex document
     metadata["default_packages"] = @default_packages
+    metadata["header"] = @header
     preamble = @style.render_latex(metadata)
     full_article = preamble + "\n\n" + body
 
