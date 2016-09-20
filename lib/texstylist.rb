@@ -1,4 +1,6 @@
 require 'texstyles'
+require 'texstylist/citations'
+
 class Texstylist
   attr_accessor :style
   @@default_package_candidates = %w(
@@ -76,15 +78,18 @@ class Texstylist
     metadata["default_packages"] = @default_packages
     metadata["header"] = @header
     preamble = @style.stylize_metadata(metadata)
-    full_article = preamble + "\n\n" + body
+    article = preamble + "\n\n" + body
 
     # IV.1. Normalize to simpler latex
-    full_article = simplify_latex(full_article)
-    # IV.2. Wrap up
-    full_article << "\n\\end{document}" if @style.package_compatible?(:latex) # finalize latex documents
-    full_article << "\n\n"
+    article = self.simplify_latex(article)
 
-    return full_article
+    # IV.2  Perform citations styling
+    article = self.stylize_citations(article, metadata)
+    # IV.3. Wrap up
+    article << "\n\\end{document}" if @style.package_compatible?(:latex) # finalize latex documents
+    article << "\n\n"
+
+    return article
   end
 
   def simplify_latex(text)
@@ -92,6 +97,10 @@ class Texstylist
     text = text.gsub(/\\amp([^\w])/, "\\\\&\\1")
     # simplify new line markup if needed
     text = text.gsub(/\r\n/, "\n")
+  end
+
+  def stylize_citations(article, metadata)
+    Citations::stylize_citations(article, metadata['bibliography'], @style, metadata['citation_style'], decorate: metadata['decorate_citations'])
   end
 
 end

@@ -4,6 +4,8 @@ require 'texstylist'
 class StyleHelloWorldTest < Minitest::Test
   def setup
     @example_metadata = YAML.load(File.read(File.join('test','fixtures','example_scholarly_article.yml')))
+    @example_body = File.read(File.join('test','fixtures','example_body.tex'))
+    @example_bibliography = File.join('test','fixtures','example_bibliography.bib')
   end
 
   def test_can_load_style
@@ -51,5 +53,31 @@ class StyleHelloWorldTest < Minitest::Test
     assert styled_doc.include?('\\usepackage[russian,english]{babel}')
     assert styled_doc.include?('\\selectlanguage{russian}'), 'cyrillic activated'
     assert styled_doc.include?('\\selectlanguage{english}'), 'english activated'
+  end
+
+  def test_can_style_citations_with_csl
+    metadata = @example_metadata.dup
+    metadata["bibliography"] = @example_bibliography
+
+    stylist = Texstylist.new(:article)
+    styled_doc = stylist.render(@example_body, @example_header, metadata)
+
+    assert styled_doc.match(/\(Author 2016\)/), 'inline citations work'
+    assert styled_doc.match(/\\section\*\{References\}/), 'references section was created'
+    assert styled_doc.match(/Author, The\. 2016\./), 'references entry has valid author'
+    assert styled_doc.match(/“The Title of the Work\.”/), 'references entry has valid title'
+  end
+
+  def test_can_style_citations_with_bibtex
+    metadata = @example_metadata.dup
+    metadata["bibliography"] = @example_bibliography
+    metadata["citation_style"] = "apacite" # simply pick a bibtex citation style
+
+    stylist = Texstylist.new(:article)
+    styled_doc = stylist.render(@example_body, @example_header, metadata)
+
+    assert styled_doc.match(/\\cite\{example\}/), 'inline citations left as-is'
+    assert styled_doc.match(/\\bibliographystyle\{apacite\}/), 'citation style was activated'
+    assert styled_doc.match(/\\bibliography\{[^}]+example_bibliography\.bib\}/), 'bibliography inclusion was added'
   end
 end

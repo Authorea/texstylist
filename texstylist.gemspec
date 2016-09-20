@@ -17,7 +17,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'escape_utils', '~> 1.2'
   spec.add_dependency 'json', '~> 1.8'
   spec.add_dependency 'stringex', '~> 2.5.2'
-  spec.add_dependency 'texstyles', '~> 0.0.8'
+  spec.add_dependency 'texstyles', '~> 0.0.9'
+  spec.add_dependency 'citeproc-ruby', '1.1.2'
+  # NOTE: When we bump up the version here, we need to regenerate by hand our lib/csl_constants.rb
+  spec.add_dependency 'csl-styles', '1.0.1.7'
+  spec.add_dependency 'bibtex-ruby'
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "pry"
