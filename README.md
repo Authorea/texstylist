@@ -6,7 +6,7 @@
 
 [![Build Status](https://secure.travis-ci.org/Authorea/texstylist.png?branch=master)](https://travis-ci.org/Authorea/texstylist)
 [![license](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/authorea/texstylist/master/LICENSE)
-[![Gem Version](https://badge.fury.io/rb/texstylist.svg)](https://badge.fury.io/rb/texstylist)
+[![Gem Version](https://badge.fury.io/rb/texstylist.svg)](https://badge.fury.io/rb/texstylist) 
 
 ## Common Questions
 
