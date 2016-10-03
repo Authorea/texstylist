@@ -80,4 +80,22 @@ class StyleHelloWorldTest < Minitest::Test
     assert styled_doc.match(/\\bibliographystyle\{apacite\}/), 'citation style was activated'
     assert styled_doc.match(/\\bibliography\{[^}]+example_bibliography\.bib\}/), 'bibliography inclusion was added'
   end
+
+  def test_readme_example
+    header = '% A latex preamble, of e.g. custom macro definitions, or custom overrides for the desired style'
+    abstract = 'An (optional) document abstract'
+    body = 'An example article body.'
+
+    metadata = {
+      'title' => 'An example scholarly article',
+      'abstract' => abstract,
+      # ... full range of scholarly metadata omitted for space
+      'bibliography' => 'biblio.bib',
+      # any bibtex or CSL citation style is accepted
+      'citation_style' => 'apacite',
+    }
+
+    stylist = Texstylist.new(:authorea) # any style from the texstylist gem is accepted
+    styled_doc = stylist.render(body, header, metadata)
+  end
 end

@@ -1,5 +1,5 @@
 require 'helper'
-require 'unicode_babel'
+require 'texstylist/unicode_babel'
 
 class UnicodeBabelTest < Minitest::Test
 

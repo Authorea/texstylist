@@ -1,14 +1,15 @@
 require 'texstyles'
 require 'texstylist/citations'
+require 'texstylist/unicode_babel'
 
 class Texstylist
   attr_accessor :style
-  @@default_package_candidates = %w(
+  @@default_package_selection = %w(
     graphicx grffile latexsym textcomp longtable multirow booktabs ams natbib url hyperref latexml
     inputenc babel)
   @@default_package_options = {'grffile' => ['space'], 'inputenc' => ['utf8']}
 
-  def initialize(style = :authorea, package_candidates = @@default_package_candidates)
+  def initialize(style = :authorea, package_candidates = @@default_package_selection)
     @style = Texstyles::Style.new(style)
     # setup default packages
     @default_packages_list = package_candidates.select{|candidate| @style.package_compatible?(candidate)}
