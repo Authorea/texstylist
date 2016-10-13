@@ -1,7 +1,6 @@
 # TeX Stylist
 
-[Authorea](http://www.authorea.com)'s TeX-based stylist. Think Instagram filters for scholarly documents.
-
+[Authorea](http://www.authorea.com)'s TeX-based stylist. 
 **CAUTION: This repository is in a pre-alpha dev sprint, consider it completely unstable until a 0.1.0 release**
 
 [![Build Status](https://secure.travis-ci.org/Authorea/texstylist.png?branch=master)](https://travis-ci.org/Authorea/texstylist)
